@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CubeBehaviourScript : MonoBehaviour
+public class CubeScript : MonoBehaviour
 {
     // Start is called before the first frame update
     private Transform mTransform;
