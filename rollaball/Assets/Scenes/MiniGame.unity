@@ -1364,6 +1364,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Pick Up
       objectReference: {fileID: 0}
+    - target: {fileID: 6492163924570754117, guid: bfac58b9b7e3d9f43a1e5579ecc036aa,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6492163924570754119, guid: bfac58b9b7e3d9f43a1e5579ecc036aa,
         type: 3}
       propertyPath: m_LocalPosition.x
