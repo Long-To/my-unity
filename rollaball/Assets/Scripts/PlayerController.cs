@@ -44,7 +44,7 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
-        else if(Input.GetKeyDown(KeyCode.Space))
+        else if (Input.GetKeyDown(KeyCode.Space))
         {
             mPickUps = GameObject.FindGameObjectsWithTag("Pick Up");
         }
@@ -69,11 +69,11 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.CompareTag("Pick Up"))
         {
             other.gameObject.SetActive(false);
-            mCount =  mCount + 1;
+            mCount++;
             SetCountText();
             if (other.transform.position == mPickUps[mIdxPickUp].transform.position)
             {
-                mIdxPickUp = mIdxPickUp + 1;
+                mIdxPickUp++;
             }
         }    
     }
