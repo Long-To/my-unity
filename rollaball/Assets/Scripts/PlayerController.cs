@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour
 {
     public Rigidbody mRB;
+    public GameObject mPrefab;
     public float mSpeed;
     public Text mCountText;
     public Text mWinText;
@@ -18,6 +19,29 @@ public class PlayerController : MonoBehaviour
         mRB = GetComponent<Rigidbody>();
         mCount = 0;
         mWinText.text = "";
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit))
+            {
+                if (hit.collider.gameObject.CompareTag("Pick Up"))
+                {
+                    hit.collider.gameObject.SetActive(false);
+                }
+                else
+                {
+                    Vector3 postion = hit.point;
+                    postion.y = 0.5f;
+                    Instantiate(mPrefab, postion, Quaternion.identity);
+                }
+            }
+        }
     }
 
     // Update is called once per frame
