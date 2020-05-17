@@ -7,10 +7,11 @@ public class PlayerController : MonoBehaviour
 {
     public Rigidbody mRB;
     public GameObject mPrefab;
+    public GameObject[] mPickUps;
+    private int mIdxPickUp;
     public float mSpeed;
     public Text mCountText;
     public Text mWinText;
-
     private int mCount;
 
     // Start is called before the first frame update
@@ -18,6 +19,7 @@ public class PlayerController : MonoBehaviour
     {
         mRB = GetComponent<Rigidbody>();
         mCount = 0;
+        mIdxPickUp = 0;
         mWinText.text = "";
     }
 
@@ -42,6 +44,15 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
+        else if(Input.GetKeyDown(KeyCode.Space))
+        {
+            mPickUps = GameObject.FindGameObjectsWithTag("Pick Up");
+        }
+
+        if (mPickUps != null && mIdxPickUp < mPickUps.Length)
+        {
+            this.transform.position = Vector3.MoveTowards(this.transform.position, mPickUps[mIdxPickUp].transform.position, mSpeed * Time.deltaTime );
+        }
     }
 
     // Update is called once per frame
@@ -60,6 +71,10 @@ public class PlayerController : MonoBehaviour
             other.gameObject.SetActive(false);
             mCount =  mCount + 1;
             SetCountText();
+            if (other.transform.position == mPickUps[mIdxPickUp].transform.position)
+            {
+                mIdxPickUp = mIdxPickUp + 1;
+            }
         }    
     }
 

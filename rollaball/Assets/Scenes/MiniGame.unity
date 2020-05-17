@@ -430,6 +430,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mRB: {fileID: 333805124}
   mPrefab: {fileID: 6492163924570754115, guid: bfac58b9b7e3d9f43a1e5579ecc036aa, type: 3}
+  mPickUps: []
   mSpeed: 100
   mCountText: {fileID: 345081870}
   mWinText: {fileID: 648837247}
