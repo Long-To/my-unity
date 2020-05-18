@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         mRB = GetComponent<Rigidbody>();
+        SimplePool.Preload(mPrefab, 20);
         mCount = 0;
         mIdxPickUp = 0;
         mWinText.text = "";
