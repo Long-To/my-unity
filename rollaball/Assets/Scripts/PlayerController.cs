@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         mRB = GetComponent<Rigidbody>();
-        SimplePool.Preload(mPrefab, 20);
+        // SimplePool.Preload(mPrefab, 20);
         mCount = 0;
         mIdxPickUp = 0;
         mWinText.text = "";
@@ -36,14 +36,16 @@ public class PlayerController : MonoBehaviour
                 if (hit.collider.gameObject.CompareTag("Pick Up"))
                 {
                     // hit.collider.gameObject.SetActive(false);
-                    SimplePool.Despawn(hit.collider.gameObject);
+                    // SimplePool.Despawn(hit.collider.gameObject);
+                    hit.collider.gameObject.Kill();
                 }
                 else
                 {
                     Vector3 postion = hit.point;
                     postion.y = 0.5f;
                     // Instantiate(mPrefab, postion, Quaternion.identity);
-                    SimplePool.Spawn(mPrefab, postion, Quaternion.identity);
+                    // SimplePool.Spawn(mPrefab, postion, Quaternion.identity);
+                    mPrefab.Spawn(postion);
                 }
             }
         }
@@ -76,7 +78,8 @@ public class PlayerController : MonoBehaviour
             if (other.transform.position == mPickUps[mIdxPickUp].transform.position)
             {
                 // other.gameObject.SetActive(false);
-                SimplePool.Despawn(other.gameObject);
+                // SimplePool.Despawn(other.gameObject);
+                other.gameObject.Kill();
                 mCount++;
                 mIdxPickUp++;
                 SetCountText();
