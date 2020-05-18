@@ -51,14 +51,21 @@ public class PlayerController : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.Space))
         {
-            reset();
+            Reset();
             SetCountText();
             mPickUps = GameObject.FindGameObjectsWithTag("Pick Up");
         }
 
         if (mPickUps != null && mIdxPickUp < mPickUps.Length)
         {
-            this.transform.position = Vector3.MoveTowards(this.transform.position, mPickUps[mIdxPickUp].transform.position, mSpeed * Time.deltaTime );
+            if (mPickUps[mIdxPickUp].transform.position == Vector3.zero)
+            {
+                mIdxPickUp++;
+            }
+            else
+            {
+                this.transform.position = Vector3.MoveTowards(this.transform.position, mPickUps[mIdxPickUp].transform.position, mSpeed * Time.deltaTime );
+            }
         }
     }
 
@@ -77,13 +84,24 @@ public class PlayerController : MonoBehaviour
         {
             if (other.transform.position == mPickUps[mIdxPickUp].transform.position)
             {
-                // other.gameObject.SetActive(false);
-                // SimplePool.Despawn(other.gameObject);
-                other.gameObject.Kill();
-                mCount++;
                 mIdxPickUp++;
-                SetCountText();
             }
+            else
+            {
+                for (int i = 0; i < mPickUps.Length; i++)
+                {
+                    if (other.transform.position == mPickUps[i].transform.position)
+                    {
+                        mPickUps[i].transform.position = Vector3.zero;
+                    }
+                }
+            }
+
+            // other.gameObject.SetActive(false);
+            // SimplePool.Despawn(other.gameObject);
+            other.gameObject.Kill();
+            mCount++;
+            SetCountText();
         }    
     }
 
@@ -96,7 +114,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void reset()
+    void Reset()
     {
         mCount = 0;
         mIdxPickUp = 0;
