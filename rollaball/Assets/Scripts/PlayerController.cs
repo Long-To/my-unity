@@ -34,13 +34,15 @@ public class PlayerController : MonoBehaviour
             {
                 if (hit.collider.gameObject.CompareTag("Pick Up"))
                 {
-                    hit.collider.gameObject.SetActive(false);
+                    // hit.collider.gameObject.SetActive(false);
+                    SimplePool.Despawn(hit.collider.gameObject);
                 }
                 else
                 {
                     Vector3 postion = hit.point;
                     postion.y = 0.5f;
-                    Instantiate(mPrefab, postion, Quaternion.identity);
+                    // Instantiate(mPrefab, postion, Quaternion.identity);
+                    SimplePool.Spawn(mPrefab, postion, Quaternion.identity);
                 }
             }
         }
@@ -68,7 +70,8 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Pick Up"))
         {
-            other.gameObject.SetActive(false);
+            // other.gameObject.SetActive(false);
+            SimplePool.Despawn(other.gameObject);
             mCount++;
             SetCountText();
             if (other.transform.position == mPickUps[mIdxPickUp].transform.position)

@@ -167,6 +167,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Pick Up (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 6492163924570754115, guid: bfac58b9b7e3d9f43a1e5579ecc036aa,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6492163924570754119, guid: bfac58b9b7e3d9f43a1e5579ecc036aa,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -241,6 +246,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Pick Up (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6492163924570754115, guid: bfac58b9b7e3d9f43a1e5579ecc036aa,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6492163924570754119, guid: bfac58b9b7e3d9f43a1e5579ecc036aa,
         type: 3}
@@ -523,6 +533,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Pick Up (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 6492163924570754115, guid: bfac58b9b7e3d9f43a1e5579ecc036aa,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6492163924570754119, guid: bfac58b9b7e3d9f43a1e5579ecc036aa,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -597,6 +612,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Pick Up (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6492163924570754115, guid: bfac58b9b7e3d9f43a1e5579ecc036aa,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6492163924570754119, guid: bfac58b9b7e3d9f43a1e5579ecc036aa,
         type: 3}
@@ -1295,13 +1315,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.3, y: 5, z: -16.9}
+  m_LocalRotation: {x: 0.4808835, y: -0, z: -0, w: 0.8767845}
+  m_LocalPosition: {x: -0.21, y: 11.91, z: -10.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 57.486004, y: 0, z: 0}
 --- !u!114 &963194229
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1513,6 +1533,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Pick Up (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 6492163924570754115, guid: bfac58b9b7e3d9f43a1e5579ecc036aa,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6492163924570754119, guid: bfac58b9b7e3d9f43a1e5579ecc036aa,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1687,6 +1712,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Pick Up
+      objectReference: {fileID: 0}
+    - target: {fileID: 6492163924570754115, guid: bfac58b9b7e3d9f43a1e5579ecc036aa,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6492163924570754117, guid: bfac58b9b7e3d9f43a1e5579ecc036aa,
         type: 3}
