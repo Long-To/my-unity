@@ -49,6 +49,8 @@ public class PlayerController : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.Space))
         {
+            reset();
+            SetCountText();
             mPickUps = GameObject.FindGameObjectsWithTag("Pick Up");
         }
 
@@ -71,13 +73,13 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Pick Up"))
         {
-            // other.gameObject.SetActive(false);
-            SimplePool.Despawn(other.gameObject);
-            mCount++;
-            SetCountText();
             if (other.transform.position == mPickUps[mIdxPickUp].transform.position)
             {
+                // other.gameObject.SetActive(false);
+                SimplePool.Despawn(other.gameObject);
+                mCount++;
                 mIdxPickUp++;
+                SetCountText();
             }
         }    
     }
@@ -85,9 +87,17 @@ public class PlayerController : MonoBehaviour
     void SetCountText()
     {
         mCountText.text = "Count: " + mCount.ToString();
-        if (mCount >= 5)
+        if (mCount >= 15)
         {
             mWinText.text = "You Win!";
         }
+    }
+
+    void reset()
+    {
+        mCount = 0;
+        mIdxPickUp = 0;
+        mPickUps = null;
+        mWinText.text = "";
     }
 }
