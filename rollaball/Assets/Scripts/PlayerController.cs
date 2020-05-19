@@ -88,13 +88,7 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                for (int i = 0; i < mPickUps.Length; i++)
-                {
-                    if (other.transform.position == mPickUps[i].transform.position)
-                    {
-                        mPickUps[i].transform.position = Vector3.zero;
-                    }
-                }
+                other.transform.position = Vector3.zero;
             }
 
             // other.gameObject.SetActive(false);
