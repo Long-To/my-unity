@@ -64,7 +64,7 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                this.transform.position = Vector3.MoveTowards(this.transform.position, mPickUps[mIdxPickUp].transform.position, mSpeed * Time.deltaTime );
+                this.transform.parent.position = Vector3.MoveTowards(this.transform.parent.position, mPickUps[mIdxPickUp].transform.position, mSpeed * Time.deltaTime );
             }
         }
     }
@@ -82,7 +82,7 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Pick Up"))
         {
-            if (other.transform.position == mPickUps[mIdxPickUp].transform.position)
+            if (mPickUps != null && mIdxPickUp < mPickUps.Length && mPickUps[mIdxPickUp].transform.position == other.transform.position)
             {
                 mIdxPickUp++;
             }
