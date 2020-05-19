@@ -7,21 +7,18 @@ public class PlayerController : MonoBehaviour
 {
     public Rigidbody mRB;
     public GameObject mPrefab;
-    public GameObject[] mPickUps;
-    private int mIdxPickUp;
+    public Vector3[] mPickUpPositions;
+    public int mIdxPickUp;
     public float mSpeed;
     public Text mCountText;
     public Text mWinText;
-    private int mCount;
+    public int mCount;
 
     // Start is called before the first frame update
     void Start()
     {
         mRB = GetComponent<Rigidbody>();
         // SimplePool.Preload(mPrefab, 20);
-        mCount = 0;
-        mIdxPickUp = 0;
-        mWinText.text = "";
     }
 
     // Update is called once per frame
@@ -37,8 +34,8 @@ public class PlayerController : MonoBehaviour
                 {
                     // hit.collider.gameObject.SetActive(false);
                     // SimplePool.Despawn(hit.collider.gameObject);
-                    hit.collider.gameObject.GetComponent<Animator>().SetInteger("IdxAnim", 3); 
                     // hit.collider.gameObject.Kill();
+                    hit.collider.gameObject.GetComponent<Animator>().SetInteger("IdxAnim", 3);
                 }
                 else
                 {
@@ -54,18 +51,18 @@ public class PlayerController : MonoBehaviour
         {
             Reset();
             SetCountText();
-            mPickUps = GameObject.FindGameObjectsWithTag("Pick Up");
+            mPickUpPositions = GetObjectPositions(GameObject.FindGameObjectsWithTag("Pick Up"));
         }
 
-        if (mPickUps != null && mIdxPickUp < mPickUps.Length)
+        if (mPickUpPositions != null && mIdxPickUp < mPickUpPositions.Length)
         {
-            if (mPickUps[mIdxPickUp].transform.position == Vector3.zero)
+            if (mPickUpPositions[mIdxPickUp] == Vector3.zero)
             {
                 mIdxPickUp++;
             }
             else
             {
-                this.transform.parent.position = Vector3.MoveTowards(this.transform.parent.position, mPickUps[mIdxPickUp].transform.position, mSpeed * Time.deltaTime );
+                this.transform.parent.position = Vector3.MoveTowards(this.transform.parent.position, mPickUpPositions[mIdxPickUp], mSpeed * Time.deltaTime );
             }
         }
     }
@@ -83,18 +80,19 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Pick Up"))
         {
-            if (mPickUps != null && mIdxPickUp < mPickUps.Length && mPickUps[mIdxPickUp].transform.position == other.transform.position)
+            if (mPickUpPositions != null && mIdxPickUp < mPickUpPositions.Length && mPickUpPositions[mIdxPickUp] == other.transform.position)
             {
                 mIdxPickUp++;
             }
             else
             {
-                other.transform.position = Vector3.zero;
+                UpdateObjectPositions(other.transform.position);
             }
 
             // other.gameObject.SetActive(false);
             // SimplePool.Despawn(other.gameObject);
-            other.gameObject.Kill();
+            // other.gameObject.Kill();
+            other.gameObject.GetComponent<Animator>().SetInteger("IdxAnim", 3);
             mCount++;
             SetCountText();
         }    
@@ -113,7 +111,30 @@ public class PlayerController : MonoBehaviour
     {
         mCount = 0;
         mIdxPickUp = 0;
-        mPickUps = null;
+        mPickUpPositions = null;
         mWinText.text = "";
+        mCountText.text = "";
+    }
+
+    Vector3[] GetObjectPositions(GameObject[] objects)
+    {
+        List<Vector3> tmp = new List<Vector3>();
+        for (int i = 0; i < objects.Length; i++)
+        {
+            tmp.Add(objects[i].transform.position);
+        }
+
+        return tmp.ToArray();
+    }
+
+    void UpdateObjectPositions(Vector3 position)
+    {
+        for (int i = 0; i < mPickUpPositions.Length; i++)
+        {
+            if (mPickUpPositions[i] == position)
+            {
+                mPickUpPositions[i] = Vector3.zero;
+            }
+        }
     }
 }
