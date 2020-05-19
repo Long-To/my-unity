@@ -37,7 +37,8 @@ public class PlayerController : MonoBehaviour
                 {
                     // hit.collider.gameObject.SetActive(false);
                     // SimplePool.Despawn(hit.collider.gameObject);
-                    hit.collider.gameObject.Kill();
+                    hit.collider.gameObject.GetComponent<Animator>().SetInteger("IdxAnim", 3); 
+                    // hit.collider.gameObject.Kill();
                 }
                 else
                 {
@@ -45,7 +46,7 @@ public class PlayerController : MonoBehaviour
                     postion.y = 0.5f;
                     // Instantiate(mPrefab, postion, Quaternion.identity);
                     // SimplePool.Spawn(mPrefab, postion, Quaternion.identity);
-                    mPrefab.Spawn(postion);
+                    mPrefab.Spawn(postion).GetComponent<Animator>().SetInteger("IdxAnim", Random.Range(0,3));
                 }
             }
         }
