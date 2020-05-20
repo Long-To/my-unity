@@ -52,6 +52,7 @@ public class PlayerController : MonoBehaviour
             Reset();
             SetCountText();
             mPickUpPositions = GetObjectPositions(GameObject.FindGameObjectsWithTag("Pick Up"));
+            this.gameObject.GetComponent<Animator>().SetInteger("IdxAnim", 1);
         }
 
         if (mPickUpPositions != null && mIdxPickUp < mPickUpPositions.Length)
@@ -62,8 +63,13 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
+                this.transform.LookAt(mPickUpPositions[mIdxPickUp]);
                 this.transform.parent.position = Vector3.MoveTowards(this.transform.parent.position, mPickUpPositions[mIdxPickUp], mSpeed * Time.deltaTime );
             }
+        }
+        else
+        {
+            this.gameObject.GetComponent<Animator>().SetInteger("IdxAnim", 0);
         }
     }
 
