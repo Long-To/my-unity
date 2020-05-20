@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
-    public Rigidbody mRB;
     public GameObject mPrefab;
     public Vector3[] mPickUpPositions;
     public int mIdxPickUp;
@@ -17,8 +16,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        mRB = GetComponent<Rigidbody>();
-        // SimplePool.Preload(mPrefab, 20);
+       Reset();
     }
 
     // Update is called once per frame
@@ -32,17 +30,12 @@ public class PlayerController : MonoBehaviour
             {
                 if (hit.collider.gameObject.CompareTag("Pick Up"))
                 {
-                    // hit.collider.gameObject.SetActive(false);
-                    // SimplePool.Despawn(hit.collider.gameObject);
-                    // hit.collider.gameObject.Kill();
                     hit.collider.gameObject.GetComponent<Animator>().SetInteger("IdxAnim", 3);
                 }
                 else
                 {
                     Vector3 postion = hit.point;
                     postion.y = 0.5f;
-                    // Instantiate(mPrefab, postion, Quaternion.identity);
-                    // SimplePool.Spawn(mPrefab, postion, Quaternion.identity);
                     mPrefab.Spawn(postion).GetComponent<Animator>().SetInteger("IdxAnim", Random.Range(0,3));
                 }
             }
@@ -63,7 +56,9 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                this.transform.LookAt(mPickUpPositions[mIdxPickUp]);
+                Vector3 direction = mPickUpPositions[mIdxPickUp];
+                direction.y = this.transform.position.y;
+                this.transform.LookAt(direction);
                 this.transform.parent.position = Vector3.MoveTowards(this.transform.parent.position, mPickUpPositions[mIdxPickUp], mSpeed * Time.deltaTime );
             }
         }
@@ -71,15 +66,6 @@ public class PlayerController : MonoBehaviour
         {
             this.gameObject.GetComponent<Animator>().SetInteger("IdxAnim", 0);
         }
-    }
-
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-        float moveHorizontal = Input.GetAxis("Horizontal");
-        float moveVertical = Input.GetAxis("Vertical");
-        Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
-        mRB.AddForce(movement * mSpeed);
     }
 
     void OnTriggerEnter(Collider other)
@@ -95,9 +81,6 @@ public class PlayerController : MonoBehaviour
                 UpdateObjectPositions(other.transform.position);
             }
 
-            // other.gameObject.SetActive(false);
-            // SimplePool.Despawn(other.gameObject);
-            // other.gameObject.Kill();
             other.gameObject.GetComponent<Animator>().SetInteger("IdxAnim", 3);
             mCount++;
             SetCountText();
