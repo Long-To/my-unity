@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     public Text mCountText;
     public Text mWinText;
     public int mCount;
+    private bool mPlayerDied;
 
     // Start is called before the first frame update
     void Start()
@@ -34,9 +35,15 @@ public class PlayerController : MonoBehaviour
                 }
                 else
                 {
+                    int color = Random.Range(0,3);
                     Vector3 postion = hit.point;
                     postion.y = 0.5f;
-                    mPrefab.Spawn(postion).GetComponent<Animator>().SetInteger("IdxAnim", Random.Range(0,3));
+                    if (color == 0)
+                    {
+                        
+                    }
+
+                    mPrefab.Spawn(postion).GetComponent<Animator>().SetInteger("IdxAnim", color);
                 }
             }
         }
@@ -45,10 +52,13 @@ public class PlayerController : MonoBehaviour
             Reset();
             SetCountText();
             mPickUpPositions = GetObjectPositions(GameObject.FindGameObjectsWithTag("Pick Up"));
-            this.gameObject.GetComponent<Animator>().SetInteger("IdxAnim", 1);
         }
 
-        if (mPickUpPositions != null && mIdxPickUp < mPickUpPositions.Length)
+        if (mPlayerDied)
+        {
+            this.gameObject.GetComponent<Animator>().SetInteger("IdxAnim", 1);
+        }
+        else if (mPickUpPositions != null && mIdxPickUp < mPickUpPositions.Length)
         {
             if (mPickUpPositions[mIdxPickUp] == Vector3.zero)
             {
@@ -56,6 +66,7 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
+                this.gameObject.GetComponent<Animator>().SetInteger("IdxAnim", 0);
                 Vector3 direction = mPickUpPositions[mIdxPickUp];
                 direction.y = this.transform.position.y;
                 this.transform.LookAt(direction);
@@ -64,7 +75,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            this.gameObject.GetComponent<Animator>().SetInteger("IdxAnim", 0);
+            this.gameObject.GetComponent<Animator>().SetInteger("IdxAnim", 3);
         }
     }
 
@@ -81,6 +92,11 @@ public class PlayerController : MonoBehaviour
                 UpdateObjectPositions(other.transform.position);
             }
 
+            if (other.gameObject.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("RedAnimPickUp"))
+            {
+                mPlayerDied = true;
+            }
+ 
             other.gameObject.GetComponent<Animator>().SetInteger("IdxAnim", 3);
             mCount++;
             SetCountText();
@@ -103,6 +119,7 @@ public class PlayerController : MonoBehaviour
         mPickUpPositions = null;
         mWinText.text = "";
         mCountText.text = "";
+        mPlayerDied = false;
     }
 
     Vector3[] GetObjectPositions(GameObject[] objects)
