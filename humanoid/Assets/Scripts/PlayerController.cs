@@ -12,12 +12,15 @@ public class PlayerController : MonoBehaviour
     public Text mCountText;
     public Text mWinText;
     public int mCount;
-    private bool mPlayerDied;
+    public Animator mAnimPlayerController;
+    private bool mPlayerIsFalling;
+    public ParticleSystem mPlayerRespawn;
 
     // Start is called before the first frame update
     void Start()
     {
-       Reset();
+        mCount = 0;
+        Reset();
     }
 
     // Update is called once per frame
@@ -38,11 +41,6 @@ public class PlayerController : MonoBehaviour
                     int color = Random.Range(0,3);
                     Vector3 postion = hit.point;
                     postion.y = 0.5f;
-                    if (color == 0)
-                    {
-                        
-                    }
-
                     mPrefab.Spawn(postion).GetComponent<Animator>().SetInteger("IdxAnim", color);
                 }
             }
@@ -54,9 +52,10 @@ public class PlayerController : MonoBehaviour
             mPickUpPositions = GetObjectPositions(GameObject.FindGameObjectsWithTag("Pick Up"));
         }
 
-        if (mPlayerDied)
+        if (mPlayerIsFalling && mAnimPlayerController.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
         {
-            this.gameObject.GetComponent<Animator>().SetInteger("IdxAnim", 1);
+            mPlayerIsFalling = false;
+            mPlayerRespawn.Play();
         }
         else if (mPickUpPositions != null && mIdxPickUp < mPickUpPositions.Length)
         {
@@ -66,16 +65,19 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                this.gameObject.GetComponent<Animator>().SetInteger("IdxAnim", 0);
-                Vector3 direction = mPickUpPositions[mIdxPickUp];
-                direction.y = this.transform.position.y;
-                this.transform.LookAt(direction);
-                this.transform.parent.position = Vector3.MoveTowards(this.transform.parent.position, mPickUpPositions[mIdxPickUp], mSpeed * Time.deltaTime );
+                if (!mPlayerIsFalling)
+                {
+                    mAnimPlayerController.SetInteger("IdxAnim", 1);
+                    Vector3 direction = mPickUpPositions[mIdxPickUp];
+                    direction.y = this.transform.position.y;
+                    this.transform.LookAt(direction);
+                    this.transform.parent.position = Vector3.MoveTowards(this.transform.parent.position, mPickUpPositions[mIdxPickUp], mSpeed * Time.deltaTime );
+                }
             }
         }
-        else
+        else if (!mPlayerIsFalling)
         {
-            this.gameObject.GetComponent<Animator>().SetInteger("IdxAnim", 3);
+            mAnimPlayerController.SetInteger("IdxAnim", 3);
         }
     }
 
@@ -94,11 +96,17 @@ public class PlayerController : MonoBehaviour
 
             if (other.gameObject.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("RedAnimPickUp"))
             {
-                mPlayerDied = true;
+                mCount--;
+                mPlayerIsFalling = true;
+                mAnimPlayerController.SetInteger("IdxAnim", 2);
+                other.gameObject.GetComponentInChildren<ParticleSystem>().Play();
             }
- 
+            else
+            {
+                mCount++;
+            }
+
             other.gameObject.GetComponent<Animator>().SetInteger("IdxAnim", 3);
-            mCount++;
             SetCountText();
         }    
     }
@@ -106,7 +114,7 @@ public class PlayerController : MonoBehaviour
     void SetCountText()
     {
         mCountText.text = "Count: " + mCount.ToString();
-        if (mCount >= 15)
+        if (mCount >= 30)
         {
             mWinText.text = "You Win!";
         }
@@ -114,12 +122,9 @@ public class PlayerController : MonoBehaviour
 
     void Reset()
     {
-        mCount = 0;
         mIdxPickUp = 0;
         mPickUpPositions = null;
-        mWinText.text = "";
-        mCountText.text = "";
-        mPlayerDied = false;
+        mPlayerIsFalling = false;
     }
 
     Vector3[] GetObjectPositions(GameObject[] objects)
