@@ -34,11 +34,11 @@ public class PlayerController : MonoBehaviour
             {
                 if (hit.collider.gameObject.CompareTag("Pick Up"))
                 {
-                    hit.collider.gameObject.GetComponent<Animator>().SetInteger("IdxAnim", 3);
+                    hit.collider.gameObject.GetComponent<Animator>().SetInteger("IdxAnim", 4);
                 }
                 else
                 {
-                    int color = Random.Range(0,3);
+                    int color = Random.Range(1,4);
                     Vector3 postion = hit.point;
                     postion.y = 0.5f;
                     mPrefab.Spawn(postion).GetComponent<Animator>().SetInteger("IdxAnim", color);
@@ -106,7 +106,7 @@ public class PlayerController : MonoBehaviour
                 mCount++;
             }
 
-            other.gameObject.GetComponent<Animator>().SetInteger("IdxAnim", 3);
+            other.gameObject.GetComponent<Animator>().SetInteger("IdxAnim", 4);
             SetCountText();
         }    
     }
@@ -123,7 +123,6 @@ public class PlayerController : MonoBehaviour
     void Reset()
     {
         mIdxPickUp = 0;
-        mPickUpPositions = null;
         mPlayerIsFalling = false;
     }
 
