@@ -26,58 +26,61 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (!InGameMenuController.mGameIsPaused)
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit))
+            if (Input.GetMouseButtonDown(0))
             {
-                if (hit.collider.gameObject.CompareTag("Pick Up"))
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hit;
+                if (Physics.Raycast(ray, out hit))
                 {
-                    hit.collider.gameObject.GetComponent<Animator>().SetInteger("IdxAnim", 4);
+                    if (hit.collider.gameObject.CompareTag("Pick Up"))
+                    {
+                        hit.collider.gameObject.GetComponent<Animator>().SetInteger("IdxAnim", 4);
+                    }
+                    else
+                    {
+                        int color = Random.Range(1,4);
+                        Vector3 postion = hit.point;
+                        postion.y = 0.5f;
+                        mPrefab.Spawn(postion).GetComponent<Animator>().SetInteger("IdxAnim", color);
+                    }
+                }
+            }
+            else if (Input.GetKeyDown(KeyCode.Space))
+            {
+                Reset();
+                SetCountText();
+                mPickUpPositions = GetObjectPositions(GameObject.FindGameObjectsWithTag("Pick Up"));
+            }
+
+            if (mPlayerIsFalling && mAnimPlayerController.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+            {
+                mPlayerIsFalling = false;
+                mPlayerRespawn.Play();
+            }
+            else if (mPickUpPositions != null && mIdxPickUp < mPickUpPositions.Length)
+            {
+                if (mPickUpPositions[mIdxPickUp] == Vector3.zero)
+                {
+                    mIdxPickUp++;
                 }
                 else
                 {
-                    int color = Random.Range(1,4);
-                    Vector3 postion = hit.point;
-                    postion.y = 0.5f;
-                    mPrefab.Spawn(postion).GetComponent<Animator>().SetInteger("IdxAnim", color);
+                    if (!mPlayerIsFalling)
+                    {
+                        mAnimPlayerController.SetInteger("IdxAnim", 1);
+                        Vector3 direction = mPickUpPositions[mIdxPickUp];
+                        direction.y = this.transform.position.y;
+                        this.transform.LookAt(direction);
+                        this.transform.parent.position = Vector3.MoveTowards(this.transform.parent.position, mPickUpPositions[mIdxPickUp], mSpeed * Time.deltaTime );
+                    }
                 }
             }
-        }
-        else if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Reset();
-            SetCountText();
-            mPickUpPositions = GetObjectPositions(GameObject.FindGameObjectsWithTag("Pick Up"));
-        }
-
-        if (mPlayerIsFalling && mAnimPlayerController.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
-        {
-            mPlayerIsFalling = false;
-            mPlayerRespawn.Play();
-        }
-        else if (mPickUpPositions != null && mIdxPickUp < mPickUpPositions.Length)
-        {
-            if (mPickUpPositions[mIdxPickUp] == Vector3.zero)
+            else if (!mPlayerIsFalling)
             {
-                mIdxPickUp++;
+                mAnimPlayerController.SetInteger("IdxAnim", 3);
             }
-            else
-            {
-                if (!mPlayerIsFalling)
-                {
-                    mAnimPlayerController.SetInteger("IdxAnim", 1);
-                    Vector3 direction = mPickUpPositions[mIdxPickUp];
-                    direction.y = this.transform.position.y;
-                    this.transform.LookAt(direction);
-                    this.transform.parent.position = Vector3.MoveTowards(this.transform.parent.position, mPickUpPositions[mIdxPickUp], mSpeed * Time.deltaTime );
-                }
-            }
-        }
-        else if (!mPlayerIsFalling)
-        {
-            mAnimPlayerController.SetInteger("IdxAnim", 3);
         }
     }
 
