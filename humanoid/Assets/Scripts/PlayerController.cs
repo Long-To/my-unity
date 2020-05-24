@@ -9,17 +9,15 @@ public class PlayerController : MonoBehaviour
     public Vector3[] mPickUpPositions;
     public int mIdxPickUp;
     public float mSpeed;
-    public Text mCountText;
-    public Text mWinText;
-    public int mCount;
     public Animator mAnimPlayerController;
     private bool mPlayerIsFalling;
     public ParticleSystem mPlayerRespawn;
+    public Slider mBlood;
 
     // Start is called before the first frame update
     void Start()
     {
-        mCount = 0;
+        mBlood.value = 1f;
         Reset();
     }
 
@@ -50,7 +48,6 @@ public class PlayerController : MonoBehaviour
             else if (Input.GetKeyDown(KeyCode.Space))
             {
                 Reset();
-                SetCountText();
                 mPickUpPositions = GetObjectPositions(GameObject.FindGameObjectsWithTag("Pick Up"));
             }
 
@@ -58,6 +55,7 @@ public class PlayerController : MonoBehaviour
             {
                 mPlayerIsFalling = false;
                 mPlayerRespawn.Play();
+                AddBloodValue(-0.2f);
             }
             else if (mPickUpPositions != null && mIdxPickUp < mPickUpPositions.Length)
             {
@@ -78,7 +76,7 @@ public class PlayerController : MonoBehaviour
                 }
             }
             else if (!mPlayerIsFalling)
-            {
+            {    
                 mAnimPlayerController.SetInteger("IdxAnim", 3);
             }
         }
@@ -99,27 +97,32 @@ public class PlayerController : MonoBehaviour
 
             if (other.gameObject.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("RedAnimPickUp"))
             {
-                mCount--;
                 mPlayerIsFalling = true;
                 mAnimPlayerController.SetInteger("IdxAnim", 2);
                 other.gameObject.GetComponentInChildren<ParticleSystem>().Play();
             }
             else
             {
-                mCount++;
+                AddBloodValue(0.1f);
             }
 
             other.gameObject.GetComponent<Animator>().SetInteger("IdxAnim", 4);
-            SetCountText();
         }    
     }
 
-    void SetCountText()
+    void AddBloodValue(float value)
     {
-        mCountText.text = "Count: " + mCount.ToString();
-        if (mCount >= 30)
+        if (mBlood.value + value  < 0)
         {
-            mWinText.text = "You Win!";
+            mBlood.value = 0;
+        }
+        else if (mBlood.value + value  > 1)
+        {
+            mBlood.value = 1;
+        }
+        else
+        {
+            mBlood.value += value;
         }
     }
 
