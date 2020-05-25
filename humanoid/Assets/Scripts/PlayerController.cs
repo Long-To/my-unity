@@ -51,6 +51,7 @@ public class PlayerController : MonoBehaviour
             }
             else if (Input.GetKeyDown(KeyCode.Space))
             {
+                mWinOrLose.text = "";
                 Reset();
                 mPickUpPositions = GetObjectPositions(GameObject.FindGameObjectsWithTag("Pick Up"));
             }
