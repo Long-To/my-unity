@@ -95,7 +95,7 @@ public class PlayerController : MonoBehaviour
                     mAnimPlayerController.SetInteger("IdxAnim", 3);
                 }
 
-                if (mPickUpPositions != null && mPickUpPositions.Length > 0)
+                if (mBlood.value > 0 && mPickUpPositions != null && mPickUpPositions.Length > 0)
                 {
                     mWinOrLose.text = "Win!";
                 } 
