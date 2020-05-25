@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class PlayerController : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class PlayerController : MonoBehaviour
     private bool mPlayerIsFalling;
     public ParticleSystem mPlayerRespawn;
     public Slider mBlood;
+    public TextMeshProUGUI mPlayedTime;
 
     // Start is called before the first frame update
     void Start()
@@ -26,6 +28,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!InGameMenuController.mGameIsPaused)
         {
+            UpdatePlayedTime();
             if (Input.GetMouseButtonDown(0))
             {
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -152,5 +155,14 @@ public class PlayerController : MonoBehaviour
                 mPickUpPositions[i] = Vector3.zero;
             }
         }
+    }
+
+    void UpdatePlayedTime()
+    {
+        mPlayedTime.text = Mathf.RoundToInt(Time.time).ToString();
+        float time = Time.time;
+        string min = ((int)time / 60).ToString("00");
+        string sec = (time % 60).ToString("00");
+        mPlayedTime.text = min + ":" + sec;
     }
 }
