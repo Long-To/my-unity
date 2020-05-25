@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     public ParticleSystem mPlayerRespawn;
     public Slider mBlood;
     public TextMeshProUGUI mPlayedTime;
+    public TextMeshPro mWinOrLose;
 
     // Start is called before the first frame update
     void Start()
@@ -56,9 +57,17 @@ public class PlayerController : MonoBehaviour
 
             if (mPlayerIsFalling && mAnimPlayerController.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
             {
-                mPlayerIsFalling = false;
-                mPlayerRespawn.Play();
                 AddBloodValue(-0.2f);
+                if (mBlood.value == 0)
+                {
+                    mWinOrLose.text = "Lose!";
+                }
+                else
+                {
+                    mPlayerIsFalling = false;
+                    mPlayerRespawn.Play();
+                }
+
             }
             else if (mPickUpPositions != null && mIdxPickUp < mPickUpPositions.Length)
             {
@@ -78,9 +87,17 @@ public class PlayerController : MonoBehaviour
                     }
                 }
             }
-            else if (!mPlayerIsFalling)
+            else
             {    
-                mAnimPlayerController.SetInteger("IdxAnim", 3);
+                if (!mPlayerIsFalling)
+                {
+                    mAnimPlayerController.SetInteger("IdxAnim", 3);
+                }
+
+                if (mPickUpPositions != null && mPickUpPositions.Length > 0)
+                {
+                    mWinOrLose.text = "Win!";
+                } 
             }
         }
     }
