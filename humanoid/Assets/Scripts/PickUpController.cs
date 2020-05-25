@@ -5,10 +5,11 @@ using UnityEngine;
 public class PickUpController : MonoBehaviour
 {
     public ParticleSystem mPickUpFireBall;
-    // Start is called before the first frame update
-    void Start()
+    
+    // Update is called once per frame
+    void Update()
     {
-        if (this.GetComponent<Animator>().GetInteger("IdxAnim") == 1)
+        if (this.GetComponent<Animator>().GetInteger("IdxAnim") == 1 && !mPickUpFireBall.isPlaying)
         {
             mPickUpFireBall.Play();
         }

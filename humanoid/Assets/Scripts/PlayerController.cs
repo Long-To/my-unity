@@ -69,7 +69,7 @@ public class PlayerController : MonoBehaviour
                     {
                         mAnimPlayerController.SetInteger("IdxAnim", 1);
                         Vector3 direction = mPickUpPositions[mIdxPickUp];
-                        direction.y = this.transform.position.y;
+                        direction.y = this.transform.position.y/2f;
                         this.transform.LookAt(direction);
                         this.transform.parent.position = Vector3.MoveTowards(this.transform.parent.position, mPickUpPositions[mIdxPickUp], mSpeed * Time.deltaTime );
                     }
