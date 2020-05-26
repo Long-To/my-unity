@@ -80,7 +80,15 @@ public class PlayerController : MonoBehaviour
                 {
                     if (!mPlayerIsFalling)
                     {
-                        mAnimPlayerController.SetInteger("IdxAnim", 1);
+                        if (mAnimPlayerController.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+                        {
+                            mAnimPlayerController.SetInteger("IdxAnim", 1);
+                        }
+                        else
+                        {
+                            mAnimPlayerController.SetInteger("IdxAnim", 5);
+                        }   
+
                         Vector3 direction = mPickUpPositions[mIdxPickUp];
                         direction.y = this.transform.position.y/2f;
                         this.transform.LookAt(direction);
