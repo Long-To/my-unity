@@ -68,7 +68,6 @@ public class PlayerController : MonoBehaviour
                     mPlayerIsFalling = false;
                     mPlayerRespawn.Play();
                 }
-
             }
             else if (mPickUpPositions != null && mIdxPickUp < mPickUpPositions.Length)
             {
@@ -197,7 +196,6 @@ public class PlayerController : MonoBehaviour
 
     void UpdatePlayedTime()
     {
-        mPlayedTime.text = Mathf.RoundToInt(Time.time).ToString();
         float time = Time.time;
         string min = ((int)time / 60).ToString("00");
         string sec = (time % 60).ToString("00");
