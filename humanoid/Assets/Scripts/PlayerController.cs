@@ -93,12 +93,15 @@ public class PlayerController : MonoBehaviour
                 if (!mPlayerIsFalling)
                 {
                     mAnimPlayerController.SetInteger("IdxAnim", 3);
+                    if (mBlood.value > 0 && mPickUpPositions != null && mPickUpPositions.Length > 0)
+                    {
+                        mWinOrLose.text = "Win!";
+                        if (mAnimPlayerController.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+                        {
+                            mAnimPlayerController.SetInteger("IdxAnim", 4);
+                        }
+                    } 
                 }
-
-                if (mBlood.value > 0 && mPickUpPositions != null && mPickUpPositions.Length > 0)
-                {
-                    mWinOrLose.text = "Win!";
-                } 
             }
         }
     }
