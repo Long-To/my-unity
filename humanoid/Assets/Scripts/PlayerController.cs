@@ -20,7 +20,6 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        mBlood.value = 1f;
         Reset();
     }
 
@@ -62,6 +61,7 @@ public class PlayerController : MonoBehaviour
                 if (mBlood.value == 0)
                 {
                     mWinOrLose.text = "Lose!";
+                    mAnimPlayerController.SetInteger("IdxAnim", 6);
                 }
                 else
                 {
@@ -80,19 +80,27 @@ public class PlayerController : MonoBehaviour
                 {
                     if (!mPlayerIsFalling)
                     {
-                        if (mAnimPlayerController.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+                        if (mAnimPlayerController.GetCurrentAnimatorStateInfo(0).IsName("Death"))
                         {
-                            mAnimPlayerController.SetInteger("IdxAnim", 1);
+                            this.transform.parent.position = Vector3.zero;
+                            mPlayerRespawn.Play();
+                            mAnimPlayerController.SetInteger("IdxAnim", 7);
+                        }
+                        else if (mAnimPlayerController.GetCurrentAnimatorStateInfo(0).IsName("Bellydancing"))
+                        {
+                            mAnimPlayerController.SetInteger("IdxAnim", 5);
                         }
                         else
                         {
-                            mAnimPlayerController.SetInteger("IdxAnim", 5);
-                        }   
-
-                        Vector3 direction = mPickUpPositions[mIdxPickUp];
-                        direction.y = this.transform.position.y/2f;
-                        this.transform.LookAt(direction);
-                        this.transform.parent.position = Vector3.MoveTowards(this.transform.parent.position, mPickUpPositions[mIdxPickUp], mSpeed * Time.deltaTime );
+                            if (mPlayerRespawn.isStopped)
+                            {
+                                mAnimPlayerController.SetInteger("IdxAnim", 1);
+                                Vector3 direction = mPickUpPositions[mIdxPickUp];
+                                direction.y = this.transform.position.y/2f;
+                                this.transform.LookAt(direction);
+                                this.transform.parent.position = Vector3.MoveTowards(this.transform.parent.position, mPickUpPositions[mIdxPickUp], mSpeed * Time.deltaTime );
+                            }
+                        }
                     }
                 }
             }
@@ -144,13 +152,13 @@ public class PlayerController : MonoBehaviour
 
     void AddBloodValue(float value)
     {
-        if (mBlood.value + value  < 0)
+        if (mBlood.value + value  < 0.0f)
         {
-            mBlood.value = 0;
+            mBlood.value = 0.0f;
         }
-        else if (mBlood.value + value  > 1)
+        else if (mBlood.value + value  > 1.0f)
         {
-            mBlood.value = 1;
+            mBlood.value = 1.0f;
         }
         else
         {
@@ -160,6 +168,7 @@ public class PlayerController : MonoBehaviour
 
     void Reset()
     {
+        mBlood.value = 1.0f;
         mIdxPickUp = 0;
         mPlayerIsFalling = false;
     }
