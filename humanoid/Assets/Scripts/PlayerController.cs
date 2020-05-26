@@ -16,11 +16,14 @@ public class PlayerController : MonoBehaviour
     public Slider mBlood;
     public TextMeshProUGUI mPlayedTime;
     public TextMeshPro mWinOrLose;
+    private AudioSource mSfxSmallExplosion;
 
     // Start is called before the first frame update
     void Start()
     {
         InGameMenuController.mGameIsPaused = false;
+        mSfxSmallExplosion = GetComponent<AudioSource>();
+        mSfxSmallExplosion.volume = MainMenuController.mSfxVolume;
         Reset();
     }
 
@@ -139,6 +142,7 @@ public class PlayerController : MonoBehaviour
             {
                 mPlayerIsFalling = true;
                 mAnimPlayerController.SetInteger("IdxAnim", 2);
+                mSfxSmallExplosion.Play();
                 other.gameObject.GetComponentInChildren<ParticleSystem>().Play();
             }
             else
